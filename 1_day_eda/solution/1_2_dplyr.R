@@ -43,7 +43,7 @@ rm(list = ls())
 
 #### 3. 파일 불러오기 ####
 getwd()
-
+setwd("/Volumes/T7/git/kma/1_day_eda/solution")
 학생 <- read.csv("학생.csv", stringsAsFactors = FALSE)
 학생2 <- readxl::read_xlsx("학생.xlsx", sheet = 1)
 
