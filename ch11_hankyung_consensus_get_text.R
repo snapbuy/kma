@@ -1,4 +1,7 @@
 # 패키지
+
+install.packages("KoNLP")
+
 library(tabulizer)
 library(pdftools)
 library(magrittr)
