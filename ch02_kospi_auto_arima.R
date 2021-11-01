@@ -1,15 +1,18 @@
 # Step 01 ---- KOSPI 데이터 불러오기 ---- 
-library(dplyr)
 library(quantmod)
-library(ggplo2)
-library(forcast)
+library(dplyr)
+library(ggplot2)
+library(forecast)
 
 # KOSPI 지수의 ticker Symbol ^KS11
 # 애플: AAPL
 # 삼성전자: 005930.KS
-KOSPI = 
+KOSPI = getSymbols("^KS11",
+                   from = "2020-01-01",
+                   to = "2021-10-29",
+                   auto.assign = FALSE)
 
-
+ts_kospi = ts(as.numeric(KOSPI$KS11.Close), frequency = 20)
 
 # Step 02 ---- 정상성과 차분 ---- 
 # ARIMA 정상성(Stationary)과 차분(Differencing)
@@ -27,49 +30,58 @@ KOSPI =
 # -- KPSS 단위근 검정 사용
 # -- 참고자료: https://otexts.com/fppkr/stationarity.html#%EB%8B%A8%EC%9C%84%EA%B7%BC%EA%B2%80%EC%A0%95
 
-library(urca)
-goog %>% ur.kpss() %>% summary()
 # Step 03 ---- 정상성과 차분 ---- 
-
+library(urca)
 kpss_test = ur.kpss(ts_kospi)
 summary(kpss_test)
+# 6.9096 유의수준 0.05보다 큼. 따라서, 차분 진행
 
+dif_01 = diff(ts_kospi, differences = 1)
+kpss_test2 = ur.kpss(dif_01)
+summary(kpss_test2)
+# 0.1721 유의수준 0.05보다 큼. 만약 0.05보다 더 크게 나오면 한번더 진행 해야 함. 
+dif_02 = diff(dif_01, differences = 2)
+kpss_test3 = ur.kpss(dif_02)
+summary(kpss_test3)
 
-
-#> 
-#> ####################### 
-#> # KPSS Unit Root Test # 
-#> ####################### 
-#> 
-#> Test is of type: mu with 7 lags. 
-#> 
-#> Value of test-statistic is: 10.72 
-#> 
-#> Critical value for a significance level of: 
-#>                 10pct  5pct 2.5pct  1pct
-#> critical values 0.347 0.463  0.574 0.739
 # Step 04 ---- Auto Arima 활용하기 ---- 
 # 주요 참고자료: https://otexts.com/fppkr/arima-r.html
 # 그래프 재 확인하기
-
+ggplot(KOSPI, aes(x = time(KOSPI))) + 
+  geom_line(aes(y = KS11.Close)) + 
+  theme_minimal()
 
 # 모형 적합
-
+arima_fit = auto.arima(ts_kospi)
+arima_fit
 
 # 결과값 해석
-
+# ARIMA(0,1,0) with drift 
+# -- 특별한 모형: https://otexts.com/fppkr/non-seasonal-arima.html
+# ARIMA(p, d, q)
+# -- p: AR(자기회귀 모형: Autoregressive Model) 모형의 Lag 의미
+# -- q: MA(이동 평균 모형: Moving Average Model)모형의 Lag 의미
+# -- d: 차분(Differencing) 횟수
+# ARIMA(0,1,0) --> 1차 차분한 평균 모형
 
 ## ---- (1) 잔차 확인 ---- 
 # 참고자료: https://otexts.com/fppkr/residuals.html
 # 잔차의 평균은 0이어야 하며, 0이 아닌 경우 예측값이 한쪽으로 편향됨. 
-# 잔차를 확인했을 때, 자기상관이 없어야 함, 자기상관인 경우 추가 정보가 남아있는 것. 
-
+# 잔차를 확인했을 때, 자기상관이 없어야 함, 자기상관인 경우 추가 정보가 남아 
+?checkresiduals
+checkresiduals(arima_fit)
 
 # p-value > 0.05 자기상관성이 없음
 # p-value < 0.05 자기상관성이 존재 
 
 ## ---- (2) 예측 ----
+predict = data.frame(forecast(arima_fit, h = 5))
+predict
 
+ggplot(predict, aes(x = index(predict), y = Point.Forecast)) + 
+  geom_line() + 
+  geom_ribbon(aes(ymin = Lo.95, ymax = Hi.95), alpha = 0.25) + 
+  geom_ribbon(aes(ymin = Lo.80, ymax = Hi.80), alpha = 0.5)
 
 
 ## 최종모형 선정

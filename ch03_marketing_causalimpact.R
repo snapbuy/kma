@@ -15,11 +15,19 @@
 
 # Step 01 ---- KOSPI 데이터 불러오기 ---- 
 library(quantmod)
+library(dplyr)
+library(CausalImpact)
+library(zoo)
+
+options(scipen = 100)
 
 # KOSPI 지수의 ticker Symbol ^KS11
 # 애플: AAPL
 # 삼성전자: 005930.KS
-install.packages("CausalImpact")
+KOSPI = getSymbols("^KS11",
+                   from = "2020-01-01",
+                   to = Sys.time(),
+                   auto.assign = FALSE)
 
 # 데이터 확인
 # 날짜, 시가(Open), 고가(High), 저가(Low), 종가(Close), 거래량(Volume), 수정가(Adjusted)
@@ -28,28 +36,69 @@ install.packages("CausalImpact")
 # 따라서 분석에서는 주로 수정가를 활용함. 
 
 # Step 02 ---- 데이터 가공 ---- 
-
+str(KOSPI)
 
 # 시가보다 종가가 높을 경우 "up", 시가가 종가보다 낮을 경우 "down"
+sample = data.frame(date = time(KOSPI),
+                    KOSPI,
+                    growth = ifelse(Cl(KOSPI) > Op(KOSPI),
+                                    "up", "down"))
 
+colnames(KOSPI)
 
 # 컬럼명 변경
-
+colnames(sample) = c("date", "Open", "High", "Low",
+                     "Close", "Volume", "Adjusted", "growth")
 
 # 데이터 확인
+glimpse(sample)
+summary(sample)
 
+data = sample %>% 
+  dplyr::select(date, Close, Volume)
+
+data2 = na.omit(data)
+start = "2020-01-01"
+end = "2020-03-31"
+
+data3 = data2 %>% 
+  filter(date > start & date < end) %>% 
+  read.zoo()
+
+data3
 
 # 1차 코로나 확산 이전 데이터 확률
-
+pre.period = as.Date(c(start, "2020-02-20"))
 
 # 대구 락다운 발표 조치 이후 (이벤트!)
-
+post.period = as.Date(c("2020-02-28", end))
 
 # 모형 학습
-
+impact = CausalImpact(data3, pre.period, post.period)
+plot(impact)
+summary(impact)
+impact$report
+impact$summary
 
 # 결론: 코로나 대확산이 없었다면 주가의 대폭락은 없었을 것 
 # 마케팅에의 적용
 
 # 마케팅 데이터셋 sample
+library(datarium)
+data(marketing)
+glimpse(marketing)
 
+marketing2 = marketing %>% 
+  mutate(dates = seq(as.Date("2021-01-01"), by = "day", length.out = 200)) %>% 
+  dplyr::select(dates, sales, everything()) %>% 
+  read.zoo()
+
+start = "2020-01-01"
+end = "2021-07-19"
+
+pre.period = as.Date(c(start, "2021-04-01"))
+post.period = as.Date(c("2021-04-10", end))
+
+impact = CausalImpact(marketing2, pre.period, post.period)
+plot(impact)
+summary(impact)

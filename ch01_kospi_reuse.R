@@ -1,6 +1,6 @@
 # Step 01 ---- KOSPI 데이터 불러오기 ---- 
 
-#install.packages("quantmod")
+install.packages("forecast")
 
 library(quantmod)
 library(ggplot2)
@@ -62,9 +62,20 @@ head(data)
 
 # Step 03 ---- 데이터 시각화 ---- 
 # 시각화
-head(data %>% )
-ggplot((data %>% filter(date( "2020-01-01"), aes(x = date)) +
-                        geom_line(aes(y = Close(), size = 2, colour = "red") +
+head(data %>% filter(date >= "2020-01-01"))
+     
+     
+ggplot2((data %>% filter(date >= "2020-01-01"), aes(x = date)) +
+        geom_linerange(aes(xmin = date - 0.3,
+                           xmax = date + 0.3,
+                           ymin = pmin(Open, close()
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       )
+        geom_line(aes(y = Close(), size = 2, colour = "red") +
                         theme_minimal()
 
                                     
@@ -136,6 +147,13 @@ ggplot((data %>% filter(date( "2020-01-01"), aes(x = date)) +
 # y = b0 + b1(추세 요인t) + b2(계절성 요인t) + et
 # t = 1, ..., T(시간)
 # tslm() 함수 이용 (trend) & 계절성 요인(Season)
+
+
+??tslm
+
+fit_lm = tslm(ts_)
+
+summary(fit_lm)
 
 ## (1) ---- 추세 요인 반영 하기 ---- 
 
