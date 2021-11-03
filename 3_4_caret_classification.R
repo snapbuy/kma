@@ -8,6 +8,7 @@ library(caret) # 머신러닝을 위한 패키지
 library(tidyverse) # 데이터 핸들링 및 시각화를 위한 패키지
 library(doParallel) # 병렬처리를 위한 패키지
 
+??doParallel
 ## 병렬처리
 # 주 목적: 속도 때문에 씀
 # 원리 및 기타 설명은 다음 링크를 참고한다. 
@@ -229,11 +230,11 @@ save(snn, file = "model/snn_model.RData")
 # snn <- readRDS("../model/snn_model.rds")
 
 # R 4.0.0 이후 버전
-load("R_NCS_2020/3_day/model/logis_model.RData")
-load("R_NCS_2020/3_day/model/rpt_model.RData")
-load("R_NCS_2020/3_day/model/rft_model.RData")
-load("R_NCS_2020/3_day/model/gbm_model.RData")
-load("R_NCS_2020/3_day/model/snn_model.RData")
+load("model/logis_model.RData")
+load("model/rpt_model.RData")
+load("model/rft_model.RData")
+load("model/gbm_model.RData")
+load("model/snn_model.RData")
 
 ## compare models
 resamps <- resamples(

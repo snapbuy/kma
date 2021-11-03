@@ -7,3 +7,9 @@ algotrading/.DS_Store
 home-credit-default-risk.zip
 .Rhistory
 .Rhistory
+.Rhistory
+.RData
+.DS_Store
+model/gbm_model.RData
+model/snn_model.RData
+.RData
