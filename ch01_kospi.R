@@ -319,3 +319,4 @@ ggplot(fore, aes(x = index(fore), y = Point.Forecast)) +
   geom_line() +
   geom_ribbon(aes(ymin = Lo.95, ymax = Hi.95), alpha = 0.25) +
   geom_ribbon(aes(ymin = Lo.80, ymax = Hi.80), alpha = 0.5)
+
