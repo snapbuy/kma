@@ -13,3 +13,5 @@ home-credit-default-risk.zip
 model/gbm_model.RData
 model/snn_model.RData
 .RData
+data/g-research-crypto-forecasting.zip
+*.csv
