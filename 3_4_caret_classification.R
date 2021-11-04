@@ -19,7 +19,7 @@ detectCores() # 현재 자기 컴퓨터의 코어 개수를 반환한다
 # 병렬처리에 쓸 코어를 등록한다. 
 # 보통 50% 쓰는 것을 추천한다. (이유: 모형이 개발되는 동안 다른 간단한 작업도 해야 함)
 
-cl <- parallel::makeCluster(2, setup_timeout = 0.5)
+cl <- parallel::makeCluster(4, setup_timeout = 0.5)
 registerDoParallel(cl)
 
 #### 단계 2. 데이터 가져오기  ####

@@ -76,6 +76,7 @@ table(test_loan$loan_status, result_pred)
 
 #### 단계 8. ROC Curve를 이용한 모델 평가 & AUC ####
 library(ROCR)
+??ROCR
 par(mfrow = c(1,1))
 pr <- prediction(pred, test_loan$loan_status)
 prf <- performance(pr, measure = "tpr", x.measure = "fpr")

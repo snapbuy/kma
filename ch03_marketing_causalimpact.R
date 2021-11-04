@@ -59,7 +59,7 @@ data = sample %>%
 
 data2 = na.omit(data)
 start = "2020-01-01"
-end = "2020-03-31"
+end = "2021-10-31"
 
 data3 = data2 %>% 
   filter(date > start & date < end) %>% 
@@ -94,7 +94,7 @@ marketing2 = marketing %>%
   read.zoo()
 
 start = "2020-01-01"
-end = "2021-07-19"
+end = "2021-10-31"
 
 pre.period = as.Date(c(start, "2021-04-01"))
 post.period = as.Date(c("2021-04-10", end))
@@ -102,3 +102,4 @@ post.period = as.Date(c("2021-04-10", end))
 impact = CausalImpact(marketing2, pre.period, post.period)
 plot(impact)
 summary(impact)
+
