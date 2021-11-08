@@ -27,7 +27,7 @@ set.seed(0)
 # Input data files are available in the read-only "../input/" directory
 # For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
 
-list.files(path = "../input")
+list.files(path = "/Volumes/T7/git/kma/data/home-credit-default-risk")
 
 # You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using "Save & Run All" 
 # You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session
@@ -38,7 +38,9 @@ list.files(path = "../input")
 
 ```{r}
 cat("Loading data...\n")
-DATA_PATH = "../input/home-credit-default-risk/"
+getwd()
+setwd("/Volumes/T7/git/kma/")
+DATA_PATH = "./data/home-credit-default-risk"
 na_strings = c("NA", "NaN", "?", "")
 train = fread(paste0(DATA_PATH, 'application_train.csv'), 
               stringsAsFactors = FALSE, 

@@ -23,9 +23,9 @@ read_delim()   # delim 옵션으로 구분자를 지정할 수 있음 ex> delim 
 
 ### 기업 재무데이터를 가지고 있는 csv 파일 다운로드
 url <- "https://github.com/mrchypark/sejongFinData/raw/master/dataAll.csv"
-download.file(url, destfile = "./dataAll.csv")
+download.file(url, destfile = "./data/dataAll.csv")
 
-findata <- read_csv("dataAll.csv")
+findata <- read_csv("./data/dataAll.csv")
 
 ### 인코딩 지정 방법
 findata <- read_csv("dataAll.csv", locale = locale(encoding = "cp949"))
@@ -86,22 +86,22 @@ read_excel()  # 어떤 확장자의 파일인지 추측하여 읽기
 url <- "https://github.com/mrchypark/fcf-R-basic/raw/master/readxlsx.xlsx"
 ### windows 사용자
 ### download.file 중 mode = "wb" 가 아니면 파일 깨져서 에러가 나는 경우가 있음
-download.file(url, destfile = "./readxlsx.xlsx", mode="wb")
+download.file(url, destfile = "./data/readxlsx.xlsx", mode="wb")
 ### 기타 사용자
-download.file(url, destfile = "./readxlsx.xlsx")
+download.file(url, destfile = "./data/readxlsx.xlsx")
 
 ### read_xlsx 함수로 파일 불러오기
 ### 첫번째 시트가 기본값임
-read_xlsx("./readxlsx.xlsx")
+read_xlsx("./data/readxlsx.xlsx")
 ### 숫자로 몇번째 시트를 불러올지 지정할 수 있음
-read_xlsx("./readxlsx.xlsx", sheet = 1)
-read_xlsx("./readxlsx.xlsx", sheet = 4)
+read_xlsx("./data/readxlsx.xlsx", sheet = 1)
+read_xlsx("./data/readxlsx.xlsx", sheet = 4)
 ### 시트 이름으로 지정 가능
-read_xlsx("./readxlsx.xlsx", sheet = "BYC")
+read_xlsx("./data/readxlsx.xlsx", sheet = "BYC")
 ### 시트 내의 데이터 중 위에 몇 줄을 건너뛰고 불러올지 skip으로 지정할 수 있음
 ### col_names 는 컬럼이 데이터 내에 있는지를 지정. TRUE가 기본값.
 ### col_names = FALSE 이면 숫자로 임의의 컬럼 이름을 사용함.
-read_xlsx("./readxlsx.xlsx", skip = 5, col_names = F)
+read_xlsx("./data/readxlsx.xlsx", skip = 5, col_names = F)
 
 ### 파일 쓰기는 writexl 패키지의 write_xlsx() 함수를 사용함.
 ### writexl 패키지는 tidyverse에 속한 패키지가 아님.

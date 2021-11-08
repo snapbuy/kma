@@ -35,6 +35,15 @@ library(tqk)
 ?code_get
 ?tqk_get
 
+
+tqk_get(
+  005930,
+  get = c("daum", "paxnet"),
+  from = "1900-01-01",
+  to = Sys.Date(),
+  tqform = T
+)###
+
 ### 종목 코드 데이터 가져오기
 code <- code_get("all")
 
