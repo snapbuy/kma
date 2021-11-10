@@ -15,3 +15,5 @@ LaTeX: pdfLaTeX
 PythonType: system
 PythonVersion: 3.8.9
 PythonPath: /usr/bin/python3
+
+SpellingDictionary: en_US
