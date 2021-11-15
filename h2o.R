@@ -4,7 +4,8 @@ library(dplyr)
 library(titanic)
 library(fastDummies)
 library(h2o)
-
+??DALEXtra
+??gdal
 
 set.seed(2021)
 titanic_train %>%
